@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Menu</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-section">
+        <img src="icon.png" alt="Chef Logo" />
+        <h2>Your Restaurant Menu</h2>
+        <p>Your Slogan</p>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li>Home</li>
+          <li>Your Orders</li>
+          <li>Wallet</li>
+          <li>Profile</li>
+          <li>Logout</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>More About Us</h3>
+        <ul>
+          <li>Our Blog</li>
+          <li>Upcoming Dishes</li>
+          <li>Our Story</li>
+          <li>Social Media Links</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search Food Item" />
+        </div>
+
+        <div class="auth-buttons">
+          <button class="signup">Signup</button>
+          <button class="login">Login</button>
+          <img src="C:\ACCIO PROJECTS\Food_Ordering_System\icon.png" alt="User Icon" class="auth-icon" />
+        </div>
+      </header>
+
+      <!-- Banner Section -->
+      <section class="banner">
+        <img src="offer.png" alt="Delicious Food Menu Offer" class="offer-banner" />
+      </section>
+
+      <!-- Menu Section -->
+      <section class="menu-section">
+        <h2>Menu</h2>
+        <div id="menu" class="menu-grid"></div>
+        <div class="order-controls">
+          <button id="orderBtn">Place Order</button>
+          <p id="status"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
