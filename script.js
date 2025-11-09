@@ -1,16 +1,15 @@
 // =========================
 // PART 1: getMenu()
 // =========================
-// Fetch and display menu items from menu.json
 async function getMenu() {
   try {
-    const response = await fetch("menu.json"); // API call
+    const response = await fetch("menu.json"); // Load menu data
     const menuData = await response.json();
 
     const menuDiv = document.getElementById("menu");
-    menuDiv.innerHTML = ""; // clear existing content
+    menuDiv.innerHTML = ""; // Clear any old items
 
-    // Display fetched food items dynamically
+    // Dynamically create menu cards
     menuData.forEach((item) => {
       const card = document.createElement("div");
       card.classList.add("card");
@@ -41,11 +40,13 @@ function TakeOrder() {
         .then((res) => res.json())
         .then((menu) => {
           const randomItems = [];
-          for (let i = 0; i < 3; i++) {
+          while (randomItems.length < 3) {
             const randomIndex = Math.floor(Math.random() * menu.length);
-            randomItems.push(menu[randomIndex]);
+            const selected = menu[randomIndex];
+            if (!randomItems.includes(selected)) {
+              randomItems.push(selected);
+            }
           }
-
           const order = { items: randomItems };
           console.log("Order received:", order);
           resolve(order);
@@ -89,7 +90,7 @@ function thankyouFnc(order) {
 }
 
 // =========================
-// PART 6: Promise handling & chaining
+// PART 6: Promise Chain
 // =========================
 document.getElementById("orderBtn").addEventListener("click", () => {
   const statusDiv = document.getElementById("status");
