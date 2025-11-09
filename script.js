@@ -1,19 +1,28 @@
-// Fetch and display menu items
+// =========================
+// PART 1: getMenu()
+// =========================
+// Fetch and display menu items from menu.json
 async function getMenu() {
   try {
-    const response = await fetch("menu.json");
+    const response = await fetch("menu.json"); // API call
     const menuData = await response.json();
 
     const menuDiv = document.getElementById("menu");
-    menuDiv.innerHTML = "";
+    menuDiv.innerHTML = ""; // clear existing content
 
+    // Display fetched food items dynamically
     menuData.forEach((item) => {
       const card = document.createElement("div");
       card.classList.add("card");
       card.innerHTML = `
         <img src="${item.imgSrc}" alt="${item.name}">
-        <h3>${item.name}</h3>
-        <p>$${item.price.toFixed(2)}/-</p>
+        <div class="card-info">
+          <div class="card-details">
+            <h3>${item.name}</h3>
+            <p>$${item.price.toFixed(2)}/-</p>
+          </div>
+          <button class="add-btn">+</button>
+        </div>
       `;
       menuDiv.appendChild(card);
     });
@@ -22,9 +31,11 @@ async function getMenu() {
   }
 }
 
-// Simulate order
+// =========================
+// PART 2: TakeOrder()
+// =========================
 function TakeOrder() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       fetch("menu.json")
         .then((res) => res.json())
@@ -35,65 +46,77 @@ function TakeOrder() {
             randomItems.push(menu[randomIndex]);
           }
 
-          const order = {
-            items: randomItems,
-            orderStatus: "received",
-          };
+          const order = { items: randomItems };
           console.log("Order received:", order);
           resolve(order);
-        });
+        })
+        .catch((err) => reject("Error taking order: " + err));
     }, 2500);
   });
 }
 
-// Simulate preparation
-function orderPrep(order) {
+// =========================
+// PART 3: orderPrep()
+// =========================
+function orderPrep() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      order.orderStatus = "prepared";
       console.log("Order prepared");
-      resolve(order);
+      resolve({ order_status: true, paid: false });
     }, 1500);
   });
 }
 
-// Simulate payment
-function payOrder(order) {
+// =========================
+// PART 4: payOrder()
+// =========================
+function payOrder() {
   return new Promise((resolve) => {
     setTimeout(() => {
-      order.paid = true;
       console.log("Order paid");
-      resolve(order);
+      resolve({ order_status: true, paid: true });
     }, 1000);
   });
 }
 
-// Thank you message
+// =========================
+// PART 5: thankyouFnc()
+// =========================
 function thankyouFnc(order) {
   if (order.paid) {
-    document.getElementById("status").innerText =
-      "Thank you for dining with us! 🍽️";
+    alert("Thank you for eating with us! 🍔🍟");
   }
 }
 
-// Full process
+// =========================
+// PART 6: Promise handling & chaining
+// =========================
 document.getElementById("orderBtn").addEventListener("click", () => {
   const statusDiv = document.getElementById("status");
   statusDiv.innerText = "Placing your order...";
 
   TakeOrder()
-    .then((order) => {
+    .then(() => {
       statusDiv.innerText = "Your order is being prepared...";
-      return orderPrep(order);
+      return orderPrep();
     })
-    .then((order) => {
+    .then(() => {
       statusDiv.innerText = "Processing payment...";
-      return payOrder(order);
+      return payOrder();
     })
-    .then((order) => {
-      thankyouFnc(order);
+    .then((orderStatus) => {
+      if (orderStatus.paid) {
+        statusDiv.innerText = "Payment successful!";
+      }
+      thankyouFnc(orderStatus);
     })
-    .catch((err) => console.error("Error:", err));
+    .catch((err) => {
+      console.error(err);
+      statusDiv.innerText = "Something went wrong. Please try again.";
+    });
 });
 
+// =========================
+// Initialize menu on page load
+// =========================
 window.onload = getMenu;
